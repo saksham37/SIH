@@ -1,4 +1,22 @@
 const artyom = new Artyom();
+
+function chooseMicState() {
+  let btn = document.getElementById("microphone");
+  if (btn.value == "on") {
+    document.getElementById("microphone").value = "off";
+    document
+      .getElementById("microphone")
+      .find("i")
+      .toggleClass("fa fa-microphone-slash");
+    artyom.say("Microphone Turned OFF");
+    artyom.fatality();
+  } else {
+    artyom.say("Microphone Turned ON");
+    startContinuousArtyom();
+    document.getElementById("microphone").value = "on";
+  }
+}
+
 function startContinuousArtyom() {
   artyom.fatality(); // use this to stop any of
 
@@ -15,7 +33,8 @@ function startContinuousArtyom() {
       .then(function () {
         console.log("Ready to work !");
       });
-  }, 250);
+  }, 1000);
+  artyom.say("You can now navigate through voice commands.");
 }
 
 // Add a single command
@@ -29,10 +48,11 @@ var commandHello = {
 
 var commands = [
   {
-    indexes: ["Schemes"],
+    indexes: ["Schemes", "Scheme", "show", "kuch", "some"],
     action: function () {
       window.location =
         "https://syedareehaquasar.github.io/SIH/ADIP/getnational_institutes.html";
+      artyom.say("Here are some of the schemes for you.");
     },
   },
   {
@@ -40,12 +60,15 @@ var commands = [
     action: function () {
       window.location =
         "https://syedareehaquasar.github.io/SIH/ADIP/get_feedback_form.html";
+      artyom.say("This is feedback section.");
     },
   },
   {
-    indexes: ["Dashboard"],
+    indexes: ["Dashboard", "back"],
     action: function () {
-      alert("https://syedareehaquasar.github.io/SIH/ADIP/index.html");
+      window.location =
+        "https://syedareehaquasar.github.io/SIH/ADIP/index.html";
+      artyom.say("You are back to dashboard.");
     },
   },
 ];

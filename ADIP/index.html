@@ -48,7 +48,7 @@
 	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
 </head>
 
-<body>
+<body onload="startContinuousArtyom()">
 
 	<div class="wrapper">
 		<div class="main-header">
@@ -396,12 +396,12 @@
 
 						</form>
 					</div>
-				</div>
-				<div class="mic">
-					<button class="btn" onclick="startContinuousArtyom()">
-						<div class="pulse-ring"></div>
-						<i class="fa fa-microphone" aria-hidden="true"></i>
-					</button>
+						<div class="mic">
+							<button class="btn" id="microphone" onclick="chooseMicState()" >
+								<div class="pulse-ring"></div>
+								<i class="fa fa-microphone" aria-hidden="true"></i>
+							</button>
+						</div>
 				</div>
 			</div>
 		</div>
