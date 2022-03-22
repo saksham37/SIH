@@ -43,10 +43,12 @@
 			background-color: #408080;
 		}
 	</style>
+	<script type="text/javascript" src="../ADIP/js/dashboard/artyom.windows.min.js"></script>
+	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
 </head>
 
 <body>
-	<!-- Voxpow.com Voice Tracker -->
+	<!-- Voxpow.com Voice Tracker
 	<script src="https://cdn.voxpow.com/static/libs/v1/voxpow.js"></script>
 	<script src="https://cdn.voxpow.com/static/libs/v1/voxpow-widget.js"></script>
 	<script src="https://cdn.voxpow.com/media/trackers/js/vp-11108844696-ATqUHsgAvG.js"></script>
@@ -59,7 +61,77 @@
 				SpeechKITT.render(), voxpowUseVoiceTyping && document.addEventListener && "function" == typeof
 				voxpowInitTextVoice && (document.addEventListener("DOMContentLoaded",
 					voxpowInitTextVoice, !1), setInterval(voxpowInitTextVoice, 1e3)));
+	</script> -->
+	<script>
+		const artyom = new Artyom();
+		function startContinuousArtyom() {
+			artyom.fatality();// use this to stop any of
+
+			setTimeout(function () {// if you use artyom.fatality , wait 250 ms to initialize again.
+				artyom.initialize({
+					lang: "en-GB",// A lot of languages are supported. Read the docs !
+					continuous: true,// Artyom will listen forever
+					listen: true, // Start recognizing
+					debug: true, // Show everything in the console
+					speed: 1 // talk normally
+				}).then(function () {
+					console.log("Ready to work !");
+				});
+			}, 250);
+		}
+
+		// Add a single command
+		var commandHello = {
+			indexes: ["hello", "good morning", "hey"], // These spoken words will trigger the execution of the command
+			action: function () { // Action to be executed when a index match with spoken word
+				artyom.say("Hey! Hope you are doing good today!");
+			}
+		};
+
+		artyom.addCommands(commandHello); // Add the command with addCommands method. Now
+
+		// Or add multiple commands at time
+		var myGroup = [
+			{
+				description: "If my database contains the name of a person say something",
+				smart: true, // a Smart command allow you to use wildcard in order to retrieve words that the user should say
+				// Ways to trigger the command with the voice
+				indexes: ["Do you know who is *", "I don't know who is *", "Is * a good person"],
+				// Do something when the commands is triggered
+				action: function (i, wildcard) {
+					var database = ["Carlos", "Bruce", "David", "Joseph", "Kenny"];
+
+					//If the command "is xxx a good person" is triggered do, else
+					if (i == 2) {
+						if (database.indexOf(wildcard.trim())) {
+							artyom.say("I'm a machine, I dont know what is a feeling");
+						} else {
+							artyom.say("I don't know who is " + wildcard + " and i cannot say if is a good person");
+						}
+					} else {
+						if (database.indexOf(wildcard.trim())) {
+							artyom.say("Of course i know who is " + wildcard + ". A really good person");
+						} else {
+							artyom.say("My database is not big enough, I don't know who is " + wildcard);
+						}
+					}
+				}
+			},
+			{
+				indexes: ["What time is it", "Is too late"],
+				action: function (i) { // var i returns the index of the recognized command in the previous array
+					if (i == 0) {
+						aFunctionThatSaysTheTime(new Date());
+					} else if (i == 1) {
+						artyom.say("Never is too late to do something my friend !");
+					}
+				}
+			}
+		];
+
+		artyom.addCommands(myGroup); 
 	</script>
+
 	<div class="wrapper">
 		<div class="main-header">
 			<div class="logo-header">
@@ -405,7 +477,17 @@
 							</fieldset>
 
 						</form>
-						<!-- 							
+					</div>
+				</div>
+				<div class="mic">
+					<button id="speech" class="btn" onclick="startContinuousArtyom()">
+						<div class="pulse-ring"></div>
+						<i class="fa fa-microphone" aria-hidden="true"></i>
+					</button>
+				</div>
+			</div>
+		</div>
+	</div>
 </body>
 <script src="../assets/js/core/jquery.3.2.1.min.js"></script>
 <script src="../assets/js/plugin/jquery-ui-1.12.1.custom/jquery-ui.min.js"></script>
@@ -421,4 +503,5 @@
 <script src="../assets/js/plugin/jquery-scrollbar/jquery.scrollbar.min.js"></script>
 <script src="../assets/js/ready.min.js"></script>
 <script src="../assets/js/demo.js"></script>
+
 </html>
